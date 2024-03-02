@@ -1,0 +1,14 @@
+
+Docker neu bauen(evtl vorher images löschen)
+
+docker-compose up --build
+
+
+docker image ls
+
+
+docker tag flomarktnuretiketten-app floheld/etiketten
+
+docker push floheld/etiketten
+
+
