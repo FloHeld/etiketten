@@ -21,16 +21,8 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cookieParser());
 
-app.use(
-  session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 
-app.use(passport.initialize());
-app.use(passport.session());
+
 
 /* mongoose.connect("mongodb://localhost:27017/flohmarktDB", {
   useNewUrlParser: true,
