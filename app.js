@@ -136,7 +136,7 @@ app.post("/etikettenErstellen", async function (req, res) {
 
 
 
-app.listen(7003, function () {
+app.listen(process.env.PORT || 7003, function () {
   console.log("Server started on port 7003");
 });
 
