@@ -142,63 +142,7 @@ app.post("/etikettenErstellen", async function (req, res) {
 
 
 
-app.post("/neuerBon", (req, res) => {
-  if (req.cookies.FMBonNr) {
-    Bon.findOne(
-      { vorgang: req.cookies.FMBonNr, flohmarktId: req.cookies.FMNr },
-      function (err, foundbon) {
-        let sum = 0;
-        foundbon.artikel.forEach(function (artikel) {
-          sum = sum + parseInt(String(artikel.nummer).slice(4));
-        });
 
-        if (foundbon.artikel.length === 0) {
-          var string = encodeURIComponent("Kein Artikel auf aktuellem Bon");
-
-          res.redirect("/kasse?validBon=" + string);
-        } else {
-          Bon.updateOne(
-            {
-              vorgang: req.cookies.FMBonNr,
-              flohmarktId: req.cookies.FMNr,
-            },
-            {
-              datum: new Date(),
-              kundenabschluss: true,
-              summe: sum,
-            },
-            function (err) {
-              if (err) {
-                console.log(err);
-              }
-              res.clearCookie("FMBonNr");
-              Bon.find(
-                { flohmarktId: req.cookies.FMNr },
-                function (err, foundbons) {
-                  const bon = new Bon({
-                    vorgang: foundbons.length + 1,
-                    flohmarktId: req.cookies.FMNr,
-                  });
-
-                  bon.save();
-                  res.cookie(`FMBonNr`, foundbons.length + 1, {
-                    maxAge: 3 * 24 * 60 * 60 * 1000, //3Tage
-                    secure: true,
-                    httpOnly: true,
-                  });
-
-                  res.redirect("/kasse");
-                }
-              );
-            }
-          );
-        }
-      }
-    );
-  } else {
-    res.redirect("/kasse");
-  }
-});
 
 app.listen(7003, function () {
   console.log("Server started on port 7003");
